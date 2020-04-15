@@ -1,7 +1,5 @@
 package duff.games.santorini.view;
 
-import java.net.URL;
-
 import duff.games.santorini.model.SantoriniModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,21 +9,26 @@ import javafx.stage.Stage;
 
 public class SantoriniMain extends Application
 {
-    public static final URL FXML = ClassLoader.getSystemResource ( "Santorini.fxml" );
+    public static final int DEFAULT_BOARD_WIDTH = 5;
+    public static final int DEFAULT_BOARD_HEIGHT = 5;
+    
+    public static final String FXML = "Santorini.fxml";
+    public static final String CSS = "Santorini.css";
     
     @Override
     public void start ( Stage stage ) throws Exception
     {
-        SantoriniModel model = new SantoriniModel ();
+        SantoriniModel model = new SantoriniModel ( DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT );
         
         SantoriniController controller = new SantoriniController ( model );
         
-        FXMLLoader fxmlLoader = new FXMLLoader ( FXML );
+        FXMLLoader fxmlLoader = new FXMLLoader ( ClassLoader.getSystemResource ( FXML ) );
         fxmlLoader.setController ( controller );
         
         Pane parent = fxmlLoader.load ();
         
-        Scene scene = new Scene ( parent, 600, 600 );
+        Scene scene = new Scene ( parent, 500, 500 );
+        scene.getStylesheets ().add ( CSS );
         
         stage.setScene ( scene );
         stage.show ();
