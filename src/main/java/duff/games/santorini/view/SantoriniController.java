@@ -30,6 +30,7 @@ public class SantoriniController implements Initializable
         this.model = model;
     }
 
+    //
     @Override
     public void initialize ( URL location, ResourceBundle resources )
     {
