@@ -60,4 +60,9 @@ public class Square
         domedProperty.set ( value );
     }
 
+    @Override
+    public String toString ()
+    {
+        return level() + ( domed()? "D" : "-" );
+    }
 }

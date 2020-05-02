@@ -1,6 +1,8 @@
 package duff.games.santorini.view;
 
+import duff.games.santorini.model.Player;
 import duff.games.santorini.model.SantoriniModel;
+import duff.games.santorini.model.ai.RandomAI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +21,18 @@ public class SantoriniMain extends Application
     public void start ( Stage stage ) throws Exception
     {
         SantoriniModel model = new SantoriniModel ( DEFAULT_BOARD_WIDTH, DEFAULT_BOARD_HEIGHT );
+        
+        Player player = new Player ( "Fred", new RandomAI ( 0 ) );
+        model.players ().add ( player );
+        
+        player = new Player ( "Barney", new RandomAI ( 1 ) );
+        model.players ().add ( player );
+        
+        player = new Player ( "Wilma", new RandomAI ( 2 ) );
+        model.players ().add ( player );
+        
+        player = new Player ( "Betty", new RandomAI ( 3 ) );
+        model.players ().add ( player );
         
         SantoriniController controller = new SantoriniController ( model );
         

@@ -1,5 +1,8 @@
 package duff.games.santorini.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -29,6 +32,70 @@ public class Board
         for ( int x = 0; x < width(); x++ )
             for ( int y = 0; y < height(); y++ )
                 squares()[ x ][ y ] = new Square ( other.squares ()[ x ][ y ] );
+    }
+    
+    public List<Coordinate> moveTargets ( Coordinate start )
+    {
+        int startLevel = squares ()[ start.x() ][ start.y() ].level ();
+
+        List<Coordinate> moveTargets = new ArrayList<> ();
+        
+        for ( int xOffset = -1; xOffset < 2; xOffset++ )
+            for ( int yOffset = -1; yOffset < 2; yOffset++ )
+            {                
+                if ( xOffset == 0 && yOffset == 0 )
+                    continue;
+                
+                int x = start.x () + xOffset;
+                int y = start.y () + yOffset;
+                
+                if ( x < 0 || x >= width () || y < 0 || y >= height () )
+                    continue;
+                
+                Square square = squares ()[ x ][ y ]; 
+                
+                if ( square.level () <= startLevel + 1 && !square.domed () )
+                    moveTargets.add ( new Coordinate ( x, y ) );
+            }
+        
+        return moveTargets;
+    }
+    
+    public List<Coordinate> buildTargets ( Coordinate center )
+    {
+        List<Coordinate> buildTargets = new ArrayList<> ();
+        
+        for ( int xOffset = -1; xOffset < 2; xOffset++ )
+            for ( int yOffset = -1; yOffset < 2; yOffset++ )
+            {                
+                if ( xOffset == 0 && yOffset == 0 )
+                    continue;
+                
+                int x = center.x () + xOffset;
+                int y = center.y () + yOffset;
+                
+                if ( x < 0 || x >= width () || y < 0 || y >= height () )
+                    continue;
+                
+                if ( !squares ()[ x ][ y ].domed () )
+                    buildTargets.add ( new Coordinate ( x, y ) );
+            }
+        
+        return buildTargets;
+    }
+    
+    public List<Coordinate> placementTargets()
+    {
+        List<Coordinate> available = new ArrayList<> ();
+        
+        for ( int x = 0; x < width (); x++ )
+            for ( int y = 0; y < height (); y++ )
+            {                
+                if ( !squares ()[ x ][ y ].domed () )
+                    available.add ( new Coordinate ( x, y ) );
+            }
+        
+        return available;
     }
     
     //
@@ -73,6 +140,11 @@ public class Board
         heightProperty.set ( value );
     }
 
+    public Square at ( Coordinate coordinate )
+    {
+        return squares ()[ coordinate.x () ][ coordinate.y () ];
+    }
+    
     //
     //
     //
@@ -94,4 +166,20 @@ public class Board
         squaresProperty.set ( value );
     }
 
+    @Override
+    public String toString ()
+    {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append ( "Board:\n" );
+        
+        for ( int y = 0; y < height (); y++ )
+        {
+            for ( int x = 0; x < width (); x++ )
+                builder.append ( squares()[ x ][ y ] );
+            builder.append ( "\n" );
+        }
+        
+        return builder.toString ();
+    }
 }
